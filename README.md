@@ -27,7 +27,10 @@ The dataset contains transaction-level data including invoices, products, custom
 
 The dataset was imported into PostgreSQL using the following command:
 
-\COPY online_retail_raw FROM 'C:/data/online_retail.csv' WITH (FORMAT csv, HEADER true);
+```sql
+\COPY online_retail_raw
+FROM 'C:/data/online_retail.csv'
+WITH (FORMAT csv, HEADER true);
 
 A raw table (online_retail_raw) was used to store the original data without modification.
 
