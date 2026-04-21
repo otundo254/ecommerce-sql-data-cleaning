@@ -25,96 +25,88 @@ The dataset contains transaction-level data including invoices, products, custom
 
 ## Data Import (PostgreSQL)
 
-The dataset was imported into PostgreSQL using the following command:
+The dataset was imported into PostgreSQL using:
 
-```sql
 \COPY online_retail_raw
 FROM 'C:/data/online_retail.csv'
 WITH (FORMAT csv, HEADER true);
 
 A raw table (online_retail_raw) was used to store the original data without modification.
 
----
-
 ## Data Cleaning Steps
 
 A layered approach was used:
 
-- online_retail_raw → raw data
-- clean_retail_data_v1 → handled NULL values
-- clean_retail_data_v2 → removed duplicates
-- clean_retail_data_v3 → formatted and analysis-ready data
-
----
-
-## Step 1: Handling NULL Values
+online_retail_raw → raw data
+clean_retail_data_v1 → handled NULL values
+clean_retail_data_v2 → removed duplicates
+clean_retail_data_v3 → formatted and analysis-ready data
+### Step 1: Handling NULL Values
 
 NULL values were handled using COALESCE().
 
 Key fixes:
-- Missing CustomerID → replaced with '0'
-- Missing Description → replaced with 'UNKNOWN PRODUCT'
+
+Missing CustomerID → replaced with '0'
+Missing Description → replaced with 'UNKNOWN PRODUCT'
 
 Example:
-COALESCE(customerid, '0')
-COALESCE(description, 'UNKNOWN PRODUCT')
 
----
-
-## Step 2: Removing Duplicates
+COALESCE(customerid, '0') AS customerid,
+COALESCE(description, 'UNKNOWN PRODUCT') AS description
+### Step 2: Removing Duplicates
 
 Duplicates were removed using ROW_NUMBER().
 
-Logic used:
 ROW_NUMBER() OVER (
     PARTITION BY invoiceno, stockcode, description, quantity, invoicedate, unitprice, customerid, country
-)
+) AS row_num
 
 Only the first row was kept:
+
 WHERE row_num = 1
-
----
-
-## Step 3: Standardization & Formatting
+### Step 3: Standardization & Formatting
 
 Data was cleaned and standardized:
 
-- Converted text to uppercase using UPPER()
-- Removed extra spaces using TRIM()
-- Converted dates using TO_TIMESTAMP()
+Converted text to uppercase using UPPER()
+Removed extra spaces using TRIM()
+Converted dates using TO_TIMESTAMP()
 
 Example:
-TRIM(UPPER(description))
-TO_TIMESTAMP(invoicedate, 'DD/MM/YYYY HH24:MI')
 
----
-
+TRIM(UPPER(description)) AS description,
+TO_TIMESTAMP(invoicedate, 'DD/MM/YYYY HH24:MI') AS invoice_date
 ## Derived Columns
 
 New columns created:
 
-- transaction_type → SALE or RETURN
-- total_amount → quantity × unit price
-
-Logic:
+transaction_type → SALE or RETURN
+total_amount → quantity × unit price
 CASE 
     WHEN quantity < 0 THEN 'RETURN'
     ELSE 'SALE'
-END
+END AS transaction_type,
 
-quantity * unitprice
-
----
-
+quantity * unitprice AS total_amount
 ## Data Challenges
 
 The dataset included:
-- Missing customer IDs
-- Duplicate rows
-- Inconsistent text formatting
-- Negative quantities (returns)
+
+Missing customer IDs
+Duplicate rows
+Inconsistent text formatting
+Negative quantities (returns)
 
 These were handled using SQL cleaning techniques.
 
----
-
+## Project Structure
+ecommerce-sql-data-cleaning/
+│
+├── README.md
+├── sql/
+│   └── data_cleaning.sql
+├── data/
+│   └── online_retail.csv
+├── powerbi/
+│   └── dashboard.pbix 
