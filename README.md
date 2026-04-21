@@ -13,7 +13,7 @@ The goal is to simulate a real-world data analyst workflow:
 
 ---
 
-## 📁 Data Source
+##  Data Source
 
 - Dataset: Online Retail Dataset (UCI)
 - Format: CSV (converted from Excel)
