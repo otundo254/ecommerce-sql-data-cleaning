@@ -54,19 +54,20 @@ Missing Description → replaced with 'UNKNOWN PRODUCT'
 
 Example:
 
-COALESCE(customerid, '0') AS customerid,
-COALESCE(description, 'UNKNOWN PRODUCT') AS description
+```sql COALESCE(customerid, '0') AS customerid,
+COALESCE(description, 'UNKNOWN PRODUCT') AS description```
 ### Step 2: Removing Duplicates
 
 Duplicates were removed using ROW_NUMBER().
 
+```sql
 ROW_NUMBER() OVER (
     PARTITION BY invoiceno, stockcode, description, quantity, invoicedate, unitprice, customerid, country
-) AS row_num
+) AS row_num ```
 
 Only the first row was kept:
 
-WHERE row_num = 1
+```sql WHERE row_num = 1```
 ### Step 3: Standardization & Formatting
 
 Data was cleaned and standardized:
@@ -77,20 +78,22 @@ Converted dates using TO_TIMESTAMP()
 
 Example:
 
+```sql
 TRIM(UPPER(description)) AS description,
-TO_TIMESTAMP(invoicedate, 'DD/MM/YYYY HH24:MI') AS invoice_date
+TO_TIMESTAMP(invoicedate, 'DD/MM/YYYY HH24:MI') AS invoice_date```
 ## Derived Columns
 
 New columns created:
 
 transaction_type → SALE or RETURN
 total_amount → quantity × unit price
+```sql
 CASE 
     WHEN quantity < 0 THEN 'RETURN'
     ELSE 'SALE'
 END AS transaction_type,
 
-quantity * unitprice AS total_amount
+quantity * unitprice AS total_amount```
 ## Data Challenges
 
 The dataset included:
@@ -103,7 +106,7 @@ Negative quantities (returns)
 These were handled using SQL cleaning techniques.
 
 ## Project Structure
-ecommerce-sql-data-cleaning/
+```ecommerce-sql-data-cleaning/
 │
 ├── README.md
 ├── sql/
@@ -111,4 +114,4 @@ ecommerce-sql-data-cleaning/
 ├── data/
 │   └── online_retail.csv
 ├── powerbi/
-│   └── dashboard.pbix 
+│   └── dashboard.pbix ```
