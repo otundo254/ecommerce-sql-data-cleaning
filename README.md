@@ -101,6 +101,79 @@ END AS transaction_type,
 
 quantity * unitprice AS total_amount
 ```
+
+## 📊 Data Analysis (SQL)
+
+Key business metrics were calculated using SQL queries.
+
+### Core KPIs
+
+
+Total Revenue, Total Orders, Total customers & Average Order Value
+
+```sql
+SELECT
+    SUM(total_amount) AS total_revenue,
+    COUNT(DISTINCT invoiceno) AS total_orders,
+    COUNT(DISTINCT customerid) AS total_customers,
+    ROUND(SUM(total_amount) / COUNT(DISTINCT invoiceno), 2) AS avg_order_value
+FROM clean_retail_data_v3
+WHERE transaction_type = 'SALE';
+```
+### Revenue over Time
+```sql
+SELECT
+    DATE_TRUNC('month', invoice_date) AS month,
+    SUM(total_amount) AS revenue
+FROM clean_retail_data_v3
+WHERE transaction_type = 'SALE'
+GROUP BY month
+ORDER BY month;
+```
+### Top products
+```sql
+SELECT
+    description,
+    SUM(quantity) AS total_units_sold,
+    SUM(total_amount) AS revenue
+FROM clean_retail_data_v3
+WHERE transaction_type = 'SALE'
+GROUP BY description
+ORDER BY revenue DESC
+LIMIT 10;
+```
+### Sales by country
+```sql
+SELECT
+    country,
+    SUM(total_amount) AS revenue
+FROM clean_retail_data_v3
+WHERE transaction_type = 'SALE'
+GROUP BY country
+ORDER BY revenue DESC;
+```
+### Top customers
+```sql
+SELECT
+    customerid,
+    COUNT(DISTINCT invoiceno) AS total_orders,
+    SUM(total_amount) AS total_spent
+FROM clean_retail_data_v3
+WHERE transaction_type = 'SALE'
+GROUP BY customerid
+ORDER BY total_spent DESC
+LIMIT 10;
+```
+### Return Analysis
+Shows Revenue that was lost to Returns
+```sql
+SELECT
+    transaction_type,
+    COUNT(*) AS total_transactions,
+    SUM(total_amount) AS total_value
+FROM clean_retail_data_v3
+GROUP BY transaction_type;
+```
 ## Data Challenges
 
 The dataset included:
@@ -112,13 +185,4 @@ Negative quantities (returns)
 
 These were handled using SQL cleaning techniques.
 
-## Project Structure
-ecommerce-sql-data-cleaning/
-│
-├── README.md
-├── sql/
-│   └── data_cleaning.sql
-├── data/
-│   └── online_retail.csv
-├── powerbi/
-│   └── dashboard.pbix 
+
