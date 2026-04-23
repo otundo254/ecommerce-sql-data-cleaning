@@ -174,6 +174,110 @@ SELECT
 FROM clean_retail_data_v3
 GROUP BY transaction_type;
 ```
+##  Power BI Dashboard
+
+The cleaned dataset (`clean_retail_data_v3`) was connected to Power BI to build an interactive dashboard for business analysis.
+
+---
+
+##  Data Connection
+
+Power BI was connected directly to PostgreSQL using the PostgreSQL connector.
+
+- Server: `localhost`
+- Database: `portfolio_projects`
+- Table/View used: `public.clean_retail_data_v3`
+
+---
+
+##  Dashboard Components
+
+### 🔹 KPI Cards
+
+The following key metrics were created using DAX:
+
+- Total Revenue (includes Returns)
+- Net Revenue (Sales only)
+- Total Orders
+- Total Customers
+- Average Order Value
+- Return Rate (%)
+
+Example:
+
+Total Revenue =
+CALCULATE(
+    SUM(clean_retail_data_v3[total_amount]),
+    clean_retail_data_v3[transaction_type] = "SALE"
+)
+
+---
+
+### 🔹 Revenue Trend
+
+A line chart was used to visualize revenue over time:
+
+- Axis: invoice_date
+- Values: Total Revenue
+
+This helps identify trends and seasonal patterns.
+
+---
+
+### 🔹 Top Products
+
+A bar chart showing the top 10 products by revenue:
+
+- Axis: description
+- Values: Total Revenue
+- Filter: Top 10 by revenue
+
+---
+
+### 🔹 Top Customers
+
+A bar chart showing the highest revenue-generating customers:
+
+- Axis: customerid
+- Values: Customer Revenue
+- Filter: Top 10 customers
+- Note: Unknown customers (`customerid = '0'`) 
+
+---
+
+### 🔹 Returns Analysis
+
+Returns were analyzed using a KPI metric:
+
+- Return Rate (%) = Returns ÷ Sales
+
+Due to the small proportion of returns, a KPI card was used instead of a pie chart for better clarity.
+
+---
+
+## 🎛 Filters (Slicers)
+
+The dashboard includes interactive filters:
+
+- Date slicer (Month/Year or relative date)
+- Transaction type (SALE / RETURN)
+
+These allow users to dynamically explore the data.
+
+---
+
+## 💡 Key Insights
+
+- Revenue is concentrated among a small number of high-value customers
+- Return rate is relatively low, indicating efficient sales operations
+- Revenue trends show consistent performance over time
+
+---
+
+## 📷 Dashboard Preview
+
+<img width="872" height="421" alt="image" src="https://github.com/user-attachments/assets/8fc99b3a-c55a-4e7b-9a81-ecaa5eca76fd" />
+
 ## Data Challenges
 
 The dataset included:
