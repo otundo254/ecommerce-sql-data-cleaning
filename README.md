@@ -1,6 +1,6 @@
 # ecommerce-sql-data-cleaning
 SQL-based data cleaning pipeline for e-commerce transaction data, including handling NULL values, duplicates, and data standardization.
-# 📊 E-commerce Sales Data Cleaning & Analysis (SQL + Power BI)
+#  E-commerce Sales Data Cleaning & Analysis (SQL + Power BI)
 
 ## 📌 Project Overview
 
@@ -261,7 +261,7 @@ Due to the small proportion of returns, a KPI card was used instead of a pie cha
 
 ---
 
-## 🎛 Filters (Slicers)
+##  Filters (Slicers)
 
 The dashboard includes interactive filters:
 
@@ -272,15 +272,15 @@ These allow users to dynamically explore the data.
 
 ---
 
-## 💡 Key Insights
+##  Key Insights
 
-- Revenue is concentrated among a small number of high-value customers
-- Return rate is relatively low, indicating efficient sales operations
-- Revenue trends show consistent performance over time
+- Top customers contribute a significant portion of total revenue, indicating revenue concentration. Dotcom Postage was the leading product with over 200k sales.
+- Return rate is approximately 8.4% of the total revenue, suggesting low product return levels
+- Revenue shows steady monthly performance with identifiable peaks in the month of september to the begining of Noverber 2011.
 
 ---
 
-## 📷 Dashboard Preview
+##  Dashboard Preview
 
 <img width="872" height="421" alt="image" src="https://github.com/user-attachments/assets/8fc99b3a-c55a-4e7b-9a81-ecaa5eca76fd" />
 
