@@ -23,6 +23,12 @@ The dataset contains transaction-level data including invoices, products, custom
 
 ---
 
+## Tools Used
+
+- PostgreSQL (data storage & SQL processing)
+- SQL (data cleaning & transformation)
+- Power BI (data visualization)
+  
 ## Data Import (PostgreSQL)
 
 The dataset was imported into PostgreSQL using:
